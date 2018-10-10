@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>svg demo</title>
+</head>
+<body>
+<svg>
+    <line id="line" x1="50" y1="50" x2="150" y2="150" stroke="#000000" />
+    <rect id="rect" x="160" y="50" width="100" height="100" fill="#c80000" />
+</svg>
+
+<script>
+    var lineElement = document.getElementById('line');
+    var rectElement = document.getElementById('rect');
+    lineElement.addEventListener('click', alertLineMessage, false);
+    rectElement.addEventListener('click', alertRectMessage, false);
+    function alertLineMessage(){
+        alert('線がクリックされました');
+    }
+    function alertRectMessage(){
+        alert('四角形がクリックされました');
+    }
+</script>
+
+</body>
+</html>
