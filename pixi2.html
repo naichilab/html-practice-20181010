@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.7.1/pixi.min.js"></script>
+</head>
+<body>
+
+<script>
+    var app = new PIXI.Application(800, 600, {backgroundColor: 0x1099bb});
+    document.body.appendChild(app.view);
+
+    var texture = PIXI.Texture.fromImage('./img/1x/鎖編み目.png');
+
+    texture.baseTexture.scaleMode = PIXI.SCALE_MODES.NEAREST;
+
+    for (var i = 0; i < 10; i++) {
+        createImg(
+            Math.floor(Math.random() * app.screen.width),
+            Math.floor(Math.random() * app.screen.height)
+        )
+    }
+
+    function createImg(x, y) {
+        var img = new PIXI.Sprite(texture);
+        img.interactive = true;
+        img.buttonMode = true;
+        img.anchor.set(0.5);
+        img.scale.set(1);
+        img
+            .on('pointerdown', onDragStart)
+            .on('pointerup', onDragEnd)
+            .on('pointerupoutside', onDragEnd)
+            .on('pointermove', onDragMove);
+
+        img.x = x;
+        img.y = y;
+        app.stage.addChild(img);
+    }
+
+    function onDragStart(event) {
+        this.data = event.data;
+        this.alpha = 0.5;
+        this.dragging = true;
+    }
+
+    function onDragEnd() {
+        this.alpha = 1;
+        this.dragging = false;
+        this.data = null;
+    }
+
+    function onDragMove() {
+        if (this.dragging) {
+            var newPosition = this.data.getLocalPosition(this.parent);
+            this.x = newPosition.x;
+            this.y = newPosition.y;
+        }
+    }
+
+</script>
+
+</body>
+</html>
