@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>amizu</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.7.1/pixi.min.js"></script>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        #sidemenu {
+            width: 20%;
+            background: #ffbebe;
+            float: left;
+        }
+
+        #pixiview {
+            width: 640px;
+            height: 480px;
+            background: #989aff;
+            float: left;
+        }
+
+        .sidebar-button {
+            width: 100%;
+        }
+
+        .amizu-kigou-button img {
+            max-width: 48px;
+            max-height: 48px;
+        }
+
+    </style>
+</head>
+<body>
+<div id="sidemenu">
+    <button class="sidebar-button selection-button">
+        <h2>選択</h2>
+    </button>
+    <button class="sidebar-button amizu-kigou-button">
+        <h2>細編み</h2>
+        <img src='img/1x/細編み目.png'>
+    </button>
+    <button class="sidebar-button amizu-kigou-button">
+        <h2>引き抜き編み</h2>
+        <img src='img/1x/引き抜き編み目.png'>
+    </button>
+    <button class="sidebar-button amizu-kigou-button">
+        <h2>鎖編み</h2>
+        <img src='img/1x/鎖編み目.png'>
+    </button>
+    <button class="sidebar-button amizu-kigou-button">
+        <h2>長編み</h2>
+        <img src='img/1x/長編み目.png'>
+    </button>
+    <button class="sidebar-button amizu-kigou-button">
+        <h2>中長編み</h2>
+        <img src='img/1x/中長編み目.png'>
+    </button>
+    <button class="sidebar-button amizu-kigou-button">
+        <h2>長々編み</h2>
+        <img src='img/1x/長々編み目.png'>
+    </button>
+</div>
+<div id="pixiview">
+</div>
+
+<script>
+    let app = new PIXI.Application({
+        width: 640,
+        height: 480,
+        transparent: true
+    });
+    let pixiview = document.getElementById('pixiview');
+    pixiview.appendChild(app.view);
+
+    PIXI.loader
+        .add([
+            "img/1x/中長編み目.png",
+            "img/1x/引き抜き編み目.png",
+            "img/1x/細編み目.png",
+            "img/1x/鎖編み目.png",
+            "img/1x/長々編み目.png",
+            "img/1x/長編み目.png"
+        ])
+        .load(setup);
+
+    let stamp;
+
+    function setup() {
+        stamp = new PIXI.Sprite(PIXI.loader.resources["img/1x/中長編み目.png"].texture);
+        stamp.interactive = true;
+        stamp.buttonMode = true;
+        stamp.anchor.set(0.5);
+        stamp.scale.set(0.3);
+        stamp
+        //            .on('pointerdown', onDragStart)
+        //            .on('pointerup', onDragEnd)
+        //            .on('pointerupoutside', onDragEnd)
+            .on('pointermove', onDragMove);
+
+        stamp.x = 100;
+        stamp.y = 100;
+        app.stage.addChild(stamp);
+    }
+
+    function onDragMove(event) {
+        var newPosition = event.data.getLocalPosition(this.parent);
+        this.x = newPosition.x;
+        this.y = newPosition.y;
+    }
+
+    function setSelectedAmizuKigou(src) {
+        if (src === '') {
+            stamp.visible = false;
+        } else {
+            stamp.texture = PIXI.loader.resources[src].texture;
+            stamp.visible = true;
+        }
+    }
+
+
+    //選択クリックでスタンプクリア
+    const selectButton = document.getElementsByClassName('selection-button')[0];
+    selectButton.addEventListener("click", function () {
+        setSelectedAmizuKigou('');
+    }, false);
+
+
+    //編み図記号クリックでスタンプ変更
+    const amizuButtons = document.getElementsByClassName('amizu-kigou-button');
+    for (var i = 0; i < amizuButtons.length; i++) {
+        const button = amizuButtons[i];
+        button.addEventListener("click", function () {
+            const img = button.getElementsByTagName("img")[0];
+            setSelectedAmizuKigou(img.getAttribute('src'));
+        }, false);
+    }
+
+</script>
+</body>
+</html>

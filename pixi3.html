@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.7.1/pixi.min.js"></script>
+    <style>* {
+        padding: 0;
+        margin: 0
+    }</style>
+</head>
+<body>
+
+<script>
+    // Pixiアプリケーションを作成する
+    let app = new PIXI.Application({
+        width: 256,
+        height: 256,
+        transparent: true
+    });
+    app.renderer.view.style.position = "absolute";
+    app.renderer.view.style.display = "block";
+    app.renderer.autoResize = true;
+    app.renderer.resize(window.innerWidth, window.innerHeight);
+    //    var app = new PIXI.Application(800, 600, {backgroundColor: 0x1099bb});
+    document.body.appendChild(app.view);
+
+    PIXI.loader
+        .add([
+            "img/1x/中長編み目.png",
+            "img/1x/引き抜き編み目.png",
+            "img/1x/細編み目.png",
+            "img/1x/鎖編み目.png",
+            "img/1x/長々編み目.png",
+            "img/1x/長編み目.png"
+        ])
+        .load(setup);
+
+    let sp1;
+
+    function setup() {
+        sp1 = new PIXI.Sprite(PIXI.loader.resources["img/1x/中長編み目.png"].texture);
+        let sp2 = new PIXI.Sprite(PIXI.loader.resources["img/1x/引き抜き編み目.png"].texture);
+        let sp3 = new PIXI.Sprite(PIXI.loader.resources["img/1x/細編み目.png"].texture);
+        let sp4 = new PIXI.Sprite(PIXI.loader.resources["img/1x/鎖編み目.png"].texture);
+        let sp5 = new PIXI.Sprite(PIXI.loader.resources["img/1x/長々編み目.png"].texture);
+        let sp6 = new PIXI.Sprite(PIXI.loader.resources["img/1x/長編み目.png"].texture);
+
+        sp1.x = 100;
+        sp1.y = 100;
+
+        sp1.anchor.set(0.5, 0.5);
+        sp1.rotation = 2;
+
+        app.stage.addChild(sp1);
+    }
+
+
+    function gameLoop() {
+        console.log("A");
+        requestAnimationFrame(gameLoop);
+        sp1.x += 1;
+    }
+
+    gameLoop();
+
+
+</script>
+
+</body>
+</html>
