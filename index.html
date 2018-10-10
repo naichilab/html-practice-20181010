@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <title>canvas</title>
+    <style>
+        #canvas {
+            background: #FAFAFA;
+        }
+    </style>
+</head>
+<body>
+<canvas id="canvas" width="500" height="500"></canvas>
+
+<script>
+    var canvas = document.getElementById("canvas");
+    var context = canvas.getContext('2d');
+    var objX, objY;
+    var objW, objH;
+
+    function init() {
+        objW = 50;
+        objH = 50;
+        objX = canvas.width / 2 - objW / 2;
+        objY = canvas.height / 2 - objH / 2;
+
+        drawRect();
+    }
+
+    window.onload = function () {
+        init();
+    }
+
+    var x, y, relX, relY;
+    var dragging = false;
+
+    function onDown(e) {
+        var offsetX = canvas.getBoundingClientRect().left;
+        var offsetY = canvas.getBoundingClientRect().top;
+
+        //マウスが押された座標
+        x = e.clientX - offsetX;
+        y = e.clientY - offsetY;
+
+        //オブジェクト上の座標かどうか
+        if (objX < x && (objX + objW) > x && objY < y && (objY + objH) > y) {
+            dragging = true;
+            relX = objX - x;
+            relY = objY - y;
+        }
+    }
+
+    canvas.addEventListener('mousedown', onDown, false);
+
+    function onMove(e) {
+        var offsetX = canvas.getBoundingClientRect().left;
+        var offsetY = canvas.getBoundingClientRect().top;
+
+        //マウスが押された座標
+        x = e.clientX - offsetX;
+        y = e.clientY - offsetY;
+
+        if (dragging) {
+            objX = x + relX;
+            objY = y + relY;
+            drawRect();
+        }
+    }
+
+    function onUp(e) {
+        dragging = false;
+    }
+
+
+    function drawRect() {
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        context.fillRect(objX, objY, objW, objH);
+    }
+
+    canvas.addEventListener('mousemove', onMove, false);
+    canvas.addEventListener('mouseup', onUp, false);
+
+</script>
+</body>
+</html>
